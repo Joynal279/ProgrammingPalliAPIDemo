@@ -12,6 +12,11 @@ namespace ProgrammingPalliAPIDemo.Manager
 		public PostManager(ApplicationDbContext _dbContext): base(new PostRepository(_dbContext))
 		{
 		}
-	}
+
+        public Post GetById(int id)
+        {
+            return GetFirstOrDefault(u => u.Id == id);
+        }
+    }
 }
 

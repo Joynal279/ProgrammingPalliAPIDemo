@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProgrammingPalliAPIDemo.Data;
+using ProgrammingPalliAPIDemo.Interfaces.Manager;
+using ProgrammingPalliAPIDemo.Manager;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
 ));
+
+builder.Services.AddTransient<IPostManager, PostManager>();
+//builder.Services.AddScoped<IPostManager, PostManager>();
+//builder.Services.AddSingleton<IPostManager, PostManager>();
 
 var app = builder.Build();
 

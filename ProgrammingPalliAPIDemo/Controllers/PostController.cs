@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProgrammingPalliAPIDemo.Data;
 using ProgrammingPalliAPIDemo.Models;
 using ProgrammingPalliAPIDemo.Manager;
+using ProgrammingPalliAPIDemo.Interfaces.Manager;
 
 namespace ProgrammingPalliAPIDemo.Controllers
 {
@@ -14,21 +15,35 @@ namespace ProgrammingPalliAPIDemo.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        ApplicationDbContext _dbContext;
-        PostManager _postManager;
+        //ApplicationDbContext _dbContext;
+        //PostManager _postManager;
 
-        public PostController(ApplicationDbContext dbContext)
+        IPostManager _postManager;
+
+        //public PostController(ApplicationDbContext dbContext)
+        //{
+        //    _dbContext = dbContext;
+        //    _postManager = new PostManager(dbContext);
+        //}
+
+        public PostController(IPostManager postManager)
         {
-            _dbContext = dbContext;
-            _postManager = new PostManager(dbContext);
+            _postManager = postManager;
         }
 
         [HttpGet]
         public List<Post> GetAll()
         {
             //var posts = _dbContext.posts.ToList();
-            var posts = _postManager.GetAll().ToList();
+            var posts = _postManager.GetAll().ToList(); 
             return posts;
+        }
+
+        [HttpGet("id")]
+        public Post GetById(int id)
+        {
+            var post = _postManager.GetById(id: id);
+            return post;
         }
 
         [HttpPost]
