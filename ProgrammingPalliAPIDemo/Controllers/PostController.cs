@@ -62,6 +62,20 @@ namespace ProgrammingPalliAPIDemo.Controllers
             }
         }
 
+        [HttpGet("text")]
+        public IActionResult SearchPost(string text)
+        {
+            try
+            {
+                var posts = _postManager.SearchPost(text);
+                return CustomResult("Data search successfully", posts.ToList(), HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.BadRequest);
+            }
+        }
+
         [HttpGet("id")]
         public IActionResult GetById(int id)
         {

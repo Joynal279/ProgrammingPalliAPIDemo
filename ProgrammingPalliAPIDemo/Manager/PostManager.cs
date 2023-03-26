@@ -22,6 +22,11 @@ namespace ProgrammingPalliAPIDemo.Manager
         {
             return GetFirstOrDefault(u => u.Id == id);
         }
+
+        public ICollection<Post> SearchPost(string text)
+        {
+            return Get(u => u.Title.ToLower().Contains(text.ToLower()));
+        }
     }
 }
 
