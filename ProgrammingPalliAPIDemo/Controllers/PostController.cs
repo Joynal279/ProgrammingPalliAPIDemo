@@ -62,5 +62,36 @@ namespace ProgrammingPalliAPIDemo.Controllers
             return null;
         }
 
+        [HttpPut]
+        public Post Edit(Post post)
+        {
+            if (post.Id == 0)
+            {
+                return post;
+            }
+            bool update = _postManager.Update(post);
+            if (update)
+            {
+                return post;
+            }
+            return null;
+        }
+
+        [HttpDelete]
+        public string Delete(int id)
+        {
+            var post = _postManager.GetById(id);
+            if (post == null)
+            {
+                return "Data no found";
+            }
+            bool isDelete = _postManager.Delete(post);
+            if (isDelete)
+            {
+                return "Post has been deleted";
+            }
+            return "Post failed been deleted";
+        }
+
     }
 }

@@ -6,7 +6,7 @@ namespace ProgrammingPalliAPIDemo.Interfaces.Manager
 {
 	public interface IPostManager: ICommonManager<Post>
 	{
-		//Post GetById(int id);
+		Post GetById(int id);
 	}
 }
 
