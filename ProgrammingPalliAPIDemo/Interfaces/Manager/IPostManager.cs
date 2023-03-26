@@ -7,6 +7,7 @@ namespace ProgrammingPalliAPIDemo.Interfaces.Manager
 	public interface IPostManager: ICommonManager<Post>
 	{
 		Post GetById(int id);
+		ICollection<Post> GetAll(string title);
 	}
 }
 

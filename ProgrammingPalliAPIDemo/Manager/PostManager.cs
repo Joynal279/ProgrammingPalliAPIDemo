@@ -13,6 +13,11 @@ namespace ProgrammingPalliAPIDemo.Manager
 		{
 		}
 
+        public ICollection<Post> GetAll(string title)
+        {
+            return Get(u => u.Title.ToLower() == title.ToLower());
+        }
+
         public Post GetById(int id)
         {
             return GetFirstOrDefault(u => u.Id == id);

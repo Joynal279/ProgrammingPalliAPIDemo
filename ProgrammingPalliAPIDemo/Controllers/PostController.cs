@@ -49,6 +49,19 @@ namespace ProgrammingPalliAPIDemo.Controllers
             
         }
 
+        [HttpGet("title")]
+        public IActionResult GetAll(string title)
+        {
+            try
+            {
+                var posts = _postManager.GetAll(title);
+                return CustomResult("Data loaded done", posts.ToList(), HttpStatusCode.OK);
+            }catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.BadRequest);
+            }
+        }
+
         [HttpGet("id")]
         public IActionResult GetById(int id)
         {
