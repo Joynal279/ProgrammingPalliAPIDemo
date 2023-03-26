@@ -32,18 +32,22 @@ namespace ProgrammingPalliAPIDemo.Controllers
         }
 
         [HttpGet]
-        public List<Post> GetAll()
+        public ActionResult<List<Post>> GetAll()
         {
             //var posts = _dbContext.posts.ToList();
             var posts = _postManager.GetAll().ToList(); 
-            return posts;
+            return Ok(posts);
         }
 
         [HttpGet("id")]
-        public Post GetById(int id)
+        public ActionResult<Post> GetById(int id)
         {
             var post = _postManager.GetById(id: id);
-            return post;
+            if (post == null)
+            {
+                return NotFound();
+            }
+            return Ok(post);
         }
 
         [HttpPost]
@@ -78,19 +82,19 @@ namespace ProgrammingPalliAPIDemo.Controllers
         }
 
         [HttpDelete]
-        public string Delete(int id)
+        public ActionResult<string> Delete(int id)
         {
             var post = _postManager.GetById(id);
             if (post == null)
             {
-                return "Data no found";
+                return NotFound();
             }
             bool isDelete = _postManager.Delete(post);
             if (isDelete)
             {
-                return "Post has been deleted";
+                return Ok("Post has been deleted");
             }
-            return "Post failed been deleted";
+            return BadRequest("Post failed been deleted");
         }
 
     }
