@@ -25,7 +25,7 @@ namespace ProgrammingPalliAPIDemo.Manager
 
         public ICollection<Post> SearchPost(string text)
         {
-            return Get(u => u.Title.ToLower().Contains(text.ToLower()));
+            return Get(u => u.Title.ToLower().Contains(text.ToLower()) || u.Description.ToLower().Contains(text.ToLower()));
         }
     }
 }
