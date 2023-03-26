@@ -32,7 +32,7 @@ namespace ProgrammingPalliAPIDemo.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Post>> GetAll()
+        public IActionResult GetAll()
         {
             //var posts = _dbContext.posts.ToList();
             var posts = _postManager.GetAll().ToList(); 
@@ -40,7 +40,7 @@ namespace ProgrammingPalliAPIDemo.Controllers
         }
 
         [HttpGet("id")]
-        public ActionResult<Post> GetById(int id)
+        public IActionResult GetById(int id)
         {
             var post = _postManager.GetById(id: id);
             if (post == null)
@@ -51,7 +51,7 @@ namespace ProgrammingPalliAPIDemo.Controllers
         }
 
         [HttpPost]
-        public Post Add(Post post)
+        public IActionResult Add(Post post)
         {
             post.CreatedDate = DateTime.Now;
             //_dbContext.posts.Add(post);
@@ -61,28 +61,28 @@ namespace ProgrammingPalliAPIDemo.Controllers
 
             if (isSaved)
             {
-                return post;
+                return Created("",post);
             }
-            return null;
+            return BadRequest("Post save failed");
         }
 
         [HttpPut]
-        public Post Edit(Post post)
+        public IActionResult Edit(Post post)
         {
             if (post.Id == 0)
             {
-                return post;
+                return BadRequest("Id is missing.");
             }
             bool update = _postManager.Update(post);
             if (update)
             {
-                return post;
+                return Ok(post);
             }
-            return null;
+            return BadRequest("Post updated failed");
         }
 
         [HttpDelete]
-        public ActionResult<string> Delete(int id)
+        public IActionResult Delete(int id)
         {
             var post = _postManager.GetById(id);
             if (post == null)
