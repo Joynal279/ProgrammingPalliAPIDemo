@@ -39,7 +39,7 @@ namespace ProgrammingPalliAPIDemo.Controllers
             try
             {
                 //var posts = _dbContext.posts.ToList();
-                var posts = _postManager.GetAll().ToList();
+                var posts = _postManager.GetAll().OrderByDescending(u=>u.CreatedDate).ThenByDescending(u=>u.Title).ToList(); //for accending use:  OrderBy(u=>u.CreatedDate)
                 return CustomResult("Data loaded successfully", posts, HttpStatusCode.OK);
             }
             catch (Exception ex)
@@ -105,9 +105,9 @@ namespace ProgrammingPalliAPIDemo.Controllers
                 bool update = _postManager.Update(post);
                 if (update)
                 {
-                    return Ok(post);
+                    return CustomResult("successfully edited", post, HttpStatusCode.OK);
                 }
-                return BadRequest("Post updated failed");
+                return CustomResult("Edit failed", post, HttpStatusCode.BadRequest);
             }
             catch (Exception ex)
             {
@@ -124,14 +124,14 @@ namespace ProgrammingPalliAPIDemo.Controllers
                 var post = _postManager.GetById(id);
                 if (post == null)
                 {
-                    return NotFound();
+                    return CustomResult("data not found", HttpStatusCode.NotFound);
                 }
                 bool isDelete = _postManager.Delete(post);
                 if (isDelete)
                 {
-                    return Ok("Post has been deleted");
+                    return CustomResult("Post has been deleted", HttpStatusCode.OK);
                 }
-                return BadRequest("Post failed been deleted");
+                return CustomResult("delete failed", HttpStatusCode.BadRequest);
             }
             catch (Exception ex)
             {
