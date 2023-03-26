@@ -10,6 +10,7 @@ using ProgrammingPalliAPIDemo.Manager;
 using ProgrammingPalliAPIDemo.Interfaces.Manager;
 using CoreApiResponse;
 using System.Net;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ProgrammingPalliAPIDemo.Controllers
 {
@@ -69,6 +70,20 @@ namespace ProgrammingPalliAPIDemo.Controllers
             {
                 var posts = _postManager.SearchPost(text);
                 return CustomResult("Data search successfully", posts.ToList(), HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.BadRequest);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetPosts(int page=1)
+        {
+            try
+            {
+                var posts = _postManager.GetPosts(page, 2); //here 2 data size
+                return CustomResult("paging data page no " + page, posts.ToList(), HttpStatusCode.OK);
             }
             catch (Exception ex)
             {

@@ -23,6 +23,16 @@ namespace ProgrammingPalliAPIDemo.Manager
             return GetFirstOrDefault(u => u.Id == id);
         }
 
+        public ICollection<Post> GetPosts(int page, int pageSize)
+        {
+            if (page<=1)
+            {
+                page = 0;
+            }
+            int totalNumber = page * pageSize;
+            return GetAll().Skip(totalNumber).Take(pageSize).ToList();
+        }
+
         public ICollection<Post> SearchPost(string text)
         {
             return Get(u => u.Title.ToLower().Contains(text.ToLower()) || u.Description.ToLower().Contains(text.ToLower()));
