@@ -8,12 +8,14 @@ using ProgrammingPalliAPIDemo.Data;
 using ProgrammingPalliAPIDemo.Models;
 using ProgrammingPalliAPIDemo.Manager;
 using ProgrammingPalliAPIDemo.Interfaces.Manager;
+using CoreApiResponse;
+using System.Net;
 
 namespace ProgrammingPalliAPIDemo.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class PostController : ControllerBase
+    public class PostController : BaseController
     {
         //ApplicationDbContext _dbContext;
         //PostManager _postManager;
@@ -38,7 +40,7 @@ namespace ProgrammingPalliAPIDemo.Controllers
             {
                 //var posts = _dbContext.posts.ToList();
                 var posts = _postManager.GetAll().ToList();
-                return Ok(posts);
+                return CustomResult("Data loaded successfully", posts, HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
@@ -55,9 +57,9 @@ namespace ProgrammingPalliAPIDemo.Controllers
                 var post = _postManager.GetById(id: id);
                 if (post == null)
                 {
-                    return NotFound();
+                    return CustomResult("Data not found", HttpStatusCode.NotFound);
                 }
-                return Ok(post);
+                return CustomResult("Data found", post, HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
@@ -79,9 +81,10 @@ namespace ProgrammingPalliAPIDemo.Controllers
 
                 if (isSaved)
                 {
-                    return Created("", post);
+                    //return Created("", post);
+                    return CustomResult("Post has been created", post, HttpStatusCode.OK);
                 }
-                return BadRequest("Post save failed");
+                return CustomResult("Post save failed", post, HttpStatusCode.BadRequest);
             }
             catch (Exception ex)
             {
@@ -97,7 +100,7 @@ namespace ProgrammingPalliAPIDemo.Controllers
             {
                 if (post.Id == 0)
                 {
-                    return BadRequest("Id is missing.");
+                    return CustomResult("Id is missing", post, HttpStatusCode.BadRequest);
                 }
                 bool update = _postManager.Update(post);
                 if (update)
